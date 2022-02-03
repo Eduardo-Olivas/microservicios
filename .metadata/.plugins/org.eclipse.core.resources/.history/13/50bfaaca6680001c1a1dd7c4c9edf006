@@ -1,0 +1,49 @@
+package com.example.persona.services;
+
+import com.example.cliente.entities.User;
+import com.example.cliente.repositories.BaseRepository;
+import com.example.cliente.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserServicesImpl extends BaseServiceImpl<User,Long> implements UserService{
+
+    @Autowired
+    private UserRepository UserRepository;
+
+    public UserServicesImpl(BaseRepository<User,Long> baseRepository){
+        super(baseRepository);
+    }
+
+
+    @Override
+    public List<User> search(String filtro) throws Exception {
+        try {
+            List<User> Users = UserRepository.findByUsernameContaining(filtro);
+            //List<User> Users = UserRepository.search(filtro);
+            //List<User> Users = UserRepository.searchNativo(filtro);
+            return Users;
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public Page<User> search(String filtro, Pageable pageable) throws Exception {
+        try {
+            Page<User> Users = UserRepository.findByUsernameContaining(filtro,pageable);
+            //Page<User> Users = UserRepository.search(filtro,pageable);
+            //Page<User> Users = UserRepository.searchNativo(filtro,pageable);
+            return Users;
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+}
+

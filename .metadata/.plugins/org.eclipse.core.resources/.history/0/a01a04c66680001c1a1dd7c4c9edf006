@@ -1,0 +1,39 @@
+package com.example.persona.repositories;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.example.cliente.entities.User;
+
+import java.util.List;
+
+@Repository
+public interface UserRepository extends BaseRepository<User, Long> {
+
+    List<User> findByUsernameContaining(String nombre);
+
+    Page<User> findByUsernameContaining(String nombre, Pageable pageable);
+    //boolean existsByDni(int dni);
+
+    @Query(value = "SELECT p FROM User p WHERE p.username LIKE %:filtro%")
+    List<User> search(@Param("filtro") String filtro);
+    @Query(value = "SELECT p FROM User p WHERE p.username LIKE %:filtro%")
+    Page<User> search(@Param("filtro") String filtro, Pageable pageable);
+
+    @Query(
+            value = "SELECT * FROM User WHERE user.username LIKE %:filtro%",
+            nativeQuery = true
+    )
+    List<User> searchNativo(@Param("filtro") String filtro);
+
+
+    @Query(
+            value = "SELECT * FROM User WHERE user.username LIKE %:filtro%",
+            countQuery = "SELECT count(*) from users",
+            nativeQuery = true
+    )
+    Page<User> searchNativo(@Param("filtro") String filtro, Pageable pageable);
+}

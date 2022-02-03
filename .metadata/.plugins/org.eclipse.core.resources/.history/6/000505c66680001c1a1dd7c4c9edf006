@@ -1,0 +1,10 @@
+package com.example.persona.repositories;
+
+import org.springframework.stereotype.Repository;
+
+import com.example.cliente.entities.Localidad;
+import com.example.cliente.entities.Persona;
+
+@Repository
+public interface LocalidadRepository extends BaseRepository<Localidad,Long>{
+}
